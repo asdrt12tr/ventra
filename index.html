@@ -365,6 +365,11 @@ p {
 
   <section>
     <h2>❓ Часто задаваемые вопросы (FAQ)</h2>
+    
+    <div class="faq-search">
+  <input type="text" id="faqSearch" placeholder="Поиск по FAQ..." />
+</div>
+    
 <div class="faq-item">
   <div class="faq-question">
     📌 Как получить выплату? (с 5 марта 2026 года)
@@ -878,11 +883,63 @@ https://t.me/+29ShHngfAH8wNWRi
     .answer {
       margin-left: 15px;
     }
+    .faq-search {
+  margin-bottom: 15px;
+}
+
+#faqSearch {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  outline: none;
+}
+
+#faqSearch:focus {
+  border-color: #007bff;
+}
   </style>
 </head>
 <body>
   
 </style>
+
+<script>
+document.querySelectorAll('.faq-question').forEach(q => {
+  q.addEventListener('click', () => {
+    const open = q.classList.contains('active');
+
+    document.querySelectorAll('.faq-question').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.faq-answer').forEach(el => el.classList.remove('open'));
+
+    if (!open) {
+      q.classList.add('active');
+      q.nextElementSibling.classList.add('open');
+    }
+  });
+});
+
+/* ===== УМНЫЙ ПОИСК ===== */
+const searchInput = document.getElementById('faqSearch');
+const faqItems = document.querySelectorAll('.faq-item');
+
+searchInput.addEventListener('input', function () {
+  const value = this.value.toLowerCase().trim();
+
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question').innerText.toLowerCase();
+    const answer = item.querySelector('.faq-answer').innerText.toLowerCase();
+
+    if (question.includes(value) || answer.includes(value)) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+});
+</script>
+  
 </body>
 </html>
 
