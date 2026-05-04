@@ -906,37 +906,38 @@ https://t.me/+29ShHngfAH8wNWRi
 </style>
 
 <script>
-document.querySelectorAll('.faq-question').forEach(q => {
-  q.addEventListener('click', () => {
-    const open = q.classList.contains('active');
-
-    document.querySelectorAll('.faq-question').forEach(el => el.classList.remove('active'));
-    document.querySelectorAll('.faq-answer').forEach(el => el.classList.remove('open'));
-
-    if (!open) {
-      q.classList.add('active');
-      q.nextElementSibling.classList.add('open');
-    }
-  });
-});
-
-/* ===== УМНЫЙ ПОИСК ===== */
 const searchInput = document.getElementById('faqSearch');
 const faqItems = document.querySelectorAll('.faq-item');
+const noResults = document.getElementById('noResults');
 
 searchInput.addEventListener('input', function () {
   const value = this.value.toLowerCase().trim();
+
+  let found = 0;
 
   faqItems.forEach(item => {
     const question = item.querySelector('.faq-question').innerText.toLowerCase();
     const answer = item.querySelector('.faq-answer').innerText.toLowerCase();
 
-    if (question.includes(value) || answer.includes(value)) {
+    const match = question.includes(value) || answer.includes(value);
+
+    if (match) {
       item.style.display = 'block';
+      found++;
+
+      // 🔥 АВТО-РАСКРЫТИЕ при поиске
+      item.querySelector('.faq-question').classList.add('active');
+      item.querySelector('.faq-answer').classList.add('open');
     } else {
       item.style.display = 'none';
+
+      // закрываем ненужные
+      item.querySelector('.faq-question').classList.remove('active');
+      item.querySelector('.faq-answer').classList.remove('open');
     }
   });
+
+  noResults.style.display = found === 0 ? 'block' : 'none';
 });
 </script>
   
